@@ -1,0 +1,7 @@
+services:
+  app:
+    image: ${DOCKERHUB_USERNAME}/devops-cicd-app:latest
+    container_name: devops-cicd-app
+    ports:
+      - "8081:8080"
+    restart: unless-stopped
