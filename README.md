@@ -66,3 +66,4 @@ docker build -t devops-cicd-app:latest .
 - The deployed app is managed by Docker Compose.
 - The Compose file uses `DOCKERHUB_USERNAME` from the Jenkins deploy stage.
 - This is a learning project, not a production-hardened deployment.
+<h1>Automatic CI/CD Deployment Working!</h1>
