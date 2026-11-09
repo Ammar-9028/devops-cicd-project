@@ -1,69 +1,55 @@
-# DevOps CI/CD Project
+# Java DevOps CI/CD Pipeline Project
 
-A small Java 21 HTTP application for practicing an end-to-end Jenkins Declarative CI/CD pipeline.
+A complete end-to-end CI/CD project using Jenkins, Maven, Docker, Docker Hub, GitHub Webhooks, and AWS EC2.
 
-## Technology
+## Project Overview
+
+This project automates the process of building, testing, containerizing, and deploying a Java application using Jenkins Declarative Pipeline.
+
+Whenever code is pushed to GitHub, a webhook automatically triggers the Jenkins pipeline.
+
+## Architecture
+
+GitHub → GitHub Webhook → Jenkins → Maven Build → Docker Build → Docker Hub → AWS EC2 Deployment
+
+## Technologies Used
+
 - Java 21
-- Maven 3.9+
+- Apache Maven 3.9.12
+- Jenkins
 - Git and GitHub
-- Jenkins Declarative Pipeline
-- Docker and Docker Hub
+- GitHub Webhooks
+- Docker
 - Docker Compose
-- GitHub webhook
+- Docker Hub
+- AWS EC2 (Ubuntu)
 
-## Application
-The app listens on container port `8080`. Docker Compose publishes it on EC2 port `8081` so it does not conflict with Jenkins on port `8080`.
+## CI/CD Pipeline Stages
 
-After deployment, open:
+1. **Checkout:** Pull source code from GitHub.
+2. **Build and Test:** Build the Java application using Maven.
+3. **Build Docker Image:** Create a Docker image.
+4. **Push to Docker Hub:** Upload the image to Docker Hub.
+5. **Deploy:** Pull the latest image and deploy the application using Docker Compose on EC2.
 
-`http://EC2_PUBLIC_IP:8081`
+## Application Access
 
-## Jenkins prerequisites
-Configure these tools in **Manage Jenkins → Tools**:
-- JDK name: `Java21`; JAVA_HOME: `/usr/lib/jvm/java-21-openjdk-amd64`
-- Maven name: `Maven3`; MAVEN_HOME: `/usr/share/maven`
+The application runs on port `8081`.
 
-Add a Jenkins username/password credential:
-- ID: `dockerHub`
-- Username: your Docker Hub username
-- Password: Docker Hub access token (recommended)
+## Automation
 
-The Jenkins agent user must be able to run Docker and Docker Compose.
+GitHub Webhook triggers Jenkins automatically whenever new code is pushed to the main branch.
 
-## Jenkins job
-Create a Pipeline job and select **Pipeline script from SCM**:
-- SCM: Git
-- Repository URL: `https://github.com/Ammar-9028/devops-cicd-project.git`
-- Branch: `*/main`
-- Script Path: `Jenkinsfile`
+## Key Learning Outcomes
 
-Do not configure or add a Shared Library. This repository does not use one.
+- Configuring Jenkins and Declarative Pipelines
+- Automating Java builds with Maven
+- Building and publishing Docker images
+- Deploying containerized applications on AWS EC2
+- Configuring GitHub Webhooks for automated CI/CD
 
-## GitHub webhook
-In GitHub repository → Settings → Webhooks → Add webhook:
-- Payload URL: `http://EC2_PUBLIC_IP:8080/github-webhook/`
-- Content type: `application/json`
-- Events: Just the push event
+## Author
 
-For a real production deployment, use HTTPS and restrict Jenkins access rather than exposing the Jenkins UI publicly.
+**Mohammed Ammar**
 
-## AWS security group
-For this learning lab, allow:
-- TCP 22 from My IP
-- TCP 8080 from My IP (Jenkins)
-- TCP 8081 from your IP (deployed application)
-
-Do not open Docker's remote API or MySQL ports.
-
-## Local build
-```bash
-mvn clean test package
-docker build -t devops-cicd-app:latest .
-```
-
-## Notes
-- The pipeline pushes `DOCKERHUB_USERNAME/devops-cicd-app:latest`.
-- The deployed app is managed by Docker Compose.
-- The Compose file uses `DOCKERHUB_USERNAME` from the Jenkins deploy stage.
-- This is a learning project, not a production-hardened deployment.
-<h1>Automatic CI/CD Deployment Working!</h1>
+GitHub: [Ammar-9028](https://github.com/Ammar-9028)
